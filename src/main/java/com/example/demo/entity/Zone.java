@@ -1,68 +1,33 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
-@Table(name = "zone")
 public class Zone {
 
     @Id
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String zoneName;
-    private int priorityLevel;
-    private int population;
-    private boolean active;
+    private Integer priorityLevel;
+    private Integer population;
+    private Boolean active = true;
 
-    public Zone() {
-    }
+    // getters & setters
 
-    public Zone(int id, String zoneName, int priorityLevel, int population, boolean active) {
-        this.id = id;
-        this.zoneName = zoneName;
-        this.priorityLevel = priorityLevel;
-        this.population = population;
-        this.active = active;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public int getId() {
-        return id;
-    }
+    public String getZoneName() { return zoneName; }
+    public void setZoneName(String zoneName) { this.zoneName = zoneName; }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    public Integer getPriorityLevel() { return priorityLevel; }
+    public void setPriorityLevel(Integer priorityLevel) { this.priorityLevel = priorityLevel; }
 
-    public String getZoneName() {
-        return zoneName;
-    }
+    public Integer getPopulation() { return population; }
+    public void setPopulation(Integer population) { this.population = population; }
 
-    public void setZoneName(String zoneName) {
-        this.zoneName = zoneName;
-    }
-
-    public int getPriorityLevel() {
-        return priorityLevel;
-    }
-
-    public void setPriorityLevel(int priorityLevel) {
-        this.priorityLevel = priorityLevel;
-    }
-
-    public int getPopulation() {
-        return population;
-    }
-
-    public void setPopulation(int population) {
-        this.population = population;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
+    public Boolean getActive() { return active; }
+    public void setActive(Boolean active) { this.active = active; }
 }
