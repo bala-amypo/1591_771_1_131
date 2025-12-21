@@ -1,11 +1,12 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.AppUser;
+import com.example.demo.dto.AuthRequest;
+import com.example.demo.dto.AuthResponse;
 import com.example.demo.service.AppUserService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 public class AuthController {
 
     private final AppUserService appUserService;
@@ -14,30 +15,22 @@ public class AuthController {
         this.appUserService = appUserService;
     }
 
-    // ===============================
-    // REGISTER (SIGN UP)
-    // ===============================
+    // 🔹 Register new user
     @PostMapping("/register")
-    public AppUser register(@RequestBody AppUser user) {
-        return appUserService.registerUser(user);
+    public void register(@RequestBody AuthRequest request) {
+        appUserService.register(
+                request.getEmail(),
+                request.getPassword(),
+                "USER"
+        );
     }
 
-    // ===============================
-    // LOGIN (BASIC - NO SECURITY)
-    // ===============================
+    // 🔹 Login user and return JWT
     @PostMapping("/login")
-    public AppUser login(
-            @RequestParam String email,
-            @RequestParam String password) {
-
-        return appUserService.login(email, password);
-    }
-
-    // ===============================
-    // DEACTIVATE ACCOUNT
-    // ===============================
-    @PutMapping("/deactivate/{id}")
-    public AppUser deactivate(@PathVariable Long id) {
-        return appUserService.deactivateUser(id);
+    public AuthResponse login(@RequestBody AuthRequest request) {
+        return appUserService.login(
+                request.getEmail(),
+                request.getPassword()
+        );
     }
 }
