@@ -1,21 +1,13 @@
-package com.example.demo.entity;
+package com.example.demo.repository;
 
-import lombok.*;
-import javax.persistence.*;
-import java.time.LocalDateTime;
+import com.example.demo.entity.Zone;
+import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
+import java.util.Optional;
 
-@Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class ZoneRestorationRecord {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    private Long eventId;
-    private Long zoneId;
-    private LocalDateTime restoredAt;
-    private String comments;
+public interface ZoneRepository extends JpaRepository<Zone, Long> {
+    Optional<Zone> findByZoneName(String zoneName);
+    
+    // Used for selecting zones to shed (lowest priority first)
+    List<Zone> findByActiveTrueOrderByPriorityLevelAsc();
 }
