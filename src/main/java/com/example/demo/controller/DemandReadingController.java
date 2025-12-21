@@ -10,31 +10,30 @@ import java.util.List;
 @RequestMapping("/api/demand-readings")
 public class DemandReadingController {
 
-    private final DemandReadingService demandReadingService;
+    private final DemandReadingService service;
 
-    public DemandReadingController(DemandReadingService demandReadingService) {
-        this.demandReadingService = demandReadingService;
+    public DemandReadingController(DemandReadingService service) {
+        this.service = service;
     }
 
     @PostMapping
-    public DemandReading createReading(@RequestBody DemandReading reading) {
-        return demandReadingService.createReading(reading);
+    public DemandReading create(@RequestBody DemandReading reading) {
+        return service.createReading(reading);
     }
 
     @GetMapping("/zone/{zoneId}")
-    public List<DemandReading> getReadingsForZone(@PathVariable Long zoneId) {
-        return demandReadingService.getReadingsForZone(zoneId);
+    public List<DemandReading> list(@PathVariable Long zoneId) {
+        return service.getReadingsForZone(zoneId);
     }
 
     @GetMapping("/zone/{zoneId}/latest")
-    public DemandReading getLatestReading(@PathVariable Long zoneId) {
-        return demandReadingService.getLatestReading(zoneId);
+    public DemandReading latest(@PathVariable Long zoneId) {
+        return service.getLatestReading(zoneId);
     }
 
     @GetMapping("/zone/{zoneId}/recent")
-    public List<DemandReading> getRecentReadings(
-            @PathVariable Long zoneId,
-            @RequestParam int limit) {
-        return demandReadingService.getRecentReadings(zoneId, limit);
+    public List<DemandReading> recent(@PathVariable Long zoneId,
+                                      @RequestParam int limit) {
+        return service.getRecentReadings(zoneId, limit);
     }
 }

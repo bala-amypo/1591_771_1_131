@@ -8,9 +8,9 @@ import java.time.Instant;
 @Entity
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class DemandReading {
 
     @Id
@@ -20,9 +20,7 @@ public class DemandReading {
     @ManyToOne(optional = false)
     private Zone zone;
 
-    @Column(nullable = false)
     private Double demandMW;
 
-    @Column(nullable = false)
     private Instant recordedAt;
 }
