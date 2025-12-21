@@ -1,7 +1,6 @@
 package com.example.demo.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,12 +12,9 @@ public class SwaggerConfig {
     @Bean
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
-                .info(new Info()
-                        .title("Smart Grid Load Shedding API")
-                        .version("1.0")
-                        .description("API Documentation for Smart Grid Management"))
+                // You need to change the port as per your server
                 .servers(List.of(
-                        new Server().url("https://9310.408procr.amypo.ai")
+                        new Server().url("https://9271.408procr.amypo.ai")
                 ));
-    }
+        }
 }
