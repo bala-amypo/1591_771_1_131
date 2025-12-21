@@ -10,28 +10,24 @@ import java.util.List;
 @RequestMapping("/api/restorations")
 public class ZoneRestorationController {
 
-    private final ZoneRestorationService restorationService;
+    private final ZoneRestorationService service;
 
-    public ZoneRestorationController(
-            ZoneRestorationService restorationService) {
-        this.restorationService = restorationService;
+    public ZoneRestorationController(ZoneRestorationService service) {
+        this.service = service;
     }
 
     @PostMapping
-    public ZoneRestorationRecord restoreZone(
-            @RequestBody ZoneRestorationRecord record) {
-        return restorationService.restoreZone(record);
+    public ZoneRestorationRecord restore(@RequestBody ZoneRestorationRecord r) {
+        return service.restoreZone(r);
     }
 
     @GetMapping("/{id}")
-    public ZoneRestorationRecord getRecordById(
-            @PathVariable Long id) {
-        return restorationService.getRecordById(id);
+    public ZoneRestorationRecord get(@PathVariable Long id) {
+        return service.getRecordById(id);
     }
 
     @GetMapping("/zone/{zoneId}")
-    public List<ZoneRestorationRecord>
-    getRecordsForZone(@PathVariable Long zoneId) {
-        return restorationService.getRecordsForZone(zoneId);
+    public List<ZoneRestorationRecord> list(@PathVariable Long zoneId) {
+        return service.getRecordsForZone(zoneId);
     }
 }
