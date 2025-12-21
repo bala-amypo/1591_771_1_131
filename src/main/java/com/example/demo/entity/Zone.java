@@ -1,26 +1,23 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
-import java.time.Instant;
+import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "zones", uniqueConstraints = {
-        @UniqueConstraint(columnNames = "zoneName")
-})
-@Getter
-@Setter
-@Builder
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Zone {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(unique = true, nullable = false)
     private String zoneName;
 
     @Column(nullable = false)
@@ -31,20 +28,9 @@ public class Zone {
     @Builder.Default
     private Boolean active = true;
 
-    private Instant createdAt;
-    private Instant updatedAt;
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 
-    @PrePersist
-    void onCreate() {
-        this.createdAt = Instant.now();
-        this.updatedAt = Instant.now();
-        if (active == null) {
-            active = true;
-        }
-    }
-
-    @PreUpdate
-    void onUpdate() {
-        this.updatedAt = Instant.now();
-    }
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 }
