@@ -1,8 +1,6 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.Zone;
-import com.example.demo.exception.BadRequestException;
-import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.ZoneRepository;
 import com.example.demo.service.ZoneService;
 import org.springframework.stereotype.Service;
@@ -14,48 +12,40 @@ public class ZoneServiceImpl implements ZoneService {
 
     private final ZoneRepository zoneRepository;
 
-    // ⚠️ Constructor order MUST match tests
+    // Strict constructor injection as required
     public ZoneServiceImpl(ZoneRepository zoneRepository) {
         this.zoneRepository = zoneRepository;
     }
 
     @Override
     public Zone createZone(Zone zone) {
-
+        // Validation: Priority >= 1
         if (zone.getPriorityLevel() < 1) {
-            throw new BadRequestException("priorityLevel must be >= 1");
+            throw new RuntimeException("priorityLevel must be >= 1");
         }
-
-        zoneRepository.findByZoneName(zone.getZoneName())
-                .ifPresent(z -> {
-                    throw new BadRequestException("Zone name must be unique");
-                });
-
-        zone.setActive(true);
+        // Validation: Unique Name
+        if (zoneRepository.findByZoneName(zone.getZoneName()).isPresent()) {
+            throw new RuntimeException("zoneName must be unique");
+        }
+        zone.setActive(true); // Default value
         return zoneRepository.save(zone);
     }
 
     @Override
-    public Zone updateZone(Long id, Zone updatedZone) {
-
-        Zone existing = zoneRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Zone not found"));
-
-        if (updatedZone.getPriorityLevel() < 1) {
-            throw new BadRequestException("priorityLevel must be >= 1");
-        }
-
-        existing.setZoneName(updatedZone.getZoneName());
-        existing.setPriorityLevel(updatedZone.getPriorityLevel());
-        existing.setPopulation(updatedZone.getPopulation());
-
-        return zoneRepository.save(existing);
+    public Zone updateZone(Long id, Zone zoneDetails) {
+        Zone zone = zoneRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Zone not found"));
+        
+        zone.setZoneName(zoneDetails.getZoneName());
+        zone.setPriorityLevel(zoneDetails.getPriorityLevel());
+        zone.setPopulation(zoneDetails.getPopulation());
+        return zoneRepository.save(zone);
     }
 
     @Override
     public Zone getZoneById(Long id) {
         return zoneRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Zone not found"));
+                .orElseThrow(() -> new RuntimeException("Zone not found"));
     }
 
     @Override
@@ -66,8 +56,7 @@ public class ZoneServiceImpl implements ZoneService {
     @Override
     public void deactivateZone(Long id) {
         Zone zone = zoneRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Zone not found"));
-
+                .orElseThrow(() -> new RuntimeException("Zone not found"));
         zone.setActive(false);
         zoneRepository.save(zone);
     }
