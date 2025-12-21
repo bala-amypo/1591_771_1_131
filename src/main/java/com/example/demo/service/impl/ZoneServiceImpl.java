@@ -14,7 +14,7 @@ public class ZoneServiceImpl implements ZoneService {
 
     private final ZoneRepository zoneRepository;
 
-    // Constructor Injection (IMPORTANT)
+    // ⚠️ Constructor order MUST match tests
     public ZoneServiceImpl(ZoneRepository zoneRepository) {
         this.zoneRepository = zoneRepository;
     }
@@ -28,7 +28,7 @@ public class ZoneServiceImpl implements ZoneService {
 
         zoneRepository.findByZoneName(zone.getZoneName())
                 .ifPresent(z -> {
-                    throw new BadRequestException("zoneName must be unique");
+                    throw new BadRequestException("Zone name must be unique");
                 });
 
         zone.setActive(true);
@@ -36,18 +36,18 @@ public class ZoneServiceImpl implements ZoneService {
     }
 
     @Override
-    public Zone updateZone(Long id, Zone zone) {
+    public Zone updateZone(Long id, Zone updatedZone) {
 
         Zone existing = zoneRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Zone not found"));
 
-        if (zone.getPriorityLevel() < 1) {
+        if (updatedZone.getPriorityLevel() < 1) {
             throw new BadRequestException("priorityLevel must be >= 1");
         }
 
-        existing.setZoneName(zone.getZoneName());
-        existing.setPriorityLevel(zone.getPriorityLevel());
-        existing.setPopulation(zone.getPopulation());
+        existing.setZoneName(updatedZone.getZoneName());
+        existing.setPriorityLevel(updatedZone.getPriorityLevel());
+        existing.setPopulation(updatedZone.getPopulation());
 
         return zoneRepository.save(existing);
     }
