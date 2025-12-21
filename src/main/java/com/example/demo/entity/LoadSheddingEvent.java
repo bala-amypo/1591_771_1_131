@@ -8,9 +8,9 @@ import java.time.Instant;
 @Entity
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class LoadSheddingEvent {
 
     @Id
@@ -24,8 +24,6 @@ public class LoadSheddingEvent {
     private Instant eventEnd;
 
     private String reason;
-
     private Long triggeredByForecastId;
-
     private Double expectedDemandReductionMW;
 }

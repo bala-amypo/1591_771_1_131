@@ -10,33 +10,29 @@ import java.util.List;
 @RequestMapping("/api/load-shedding")
 public class LoadSheddingController {
 
-    private final LoadSheddingService loadSheddingService;
+    private final LoadSheddingService service;
 
-    public LoadSheddingController(
-            LoadSheddingService loadSheddingService) {
-        this.loadSheddingService = loadSheddingService;
+    public LoadSheddingController(LoadSheddingService service) {
+        this.service = service;
     }
 
     @PostMapping("/trigger/{forecastId}")
-    public LoadSheddingEvent triggerLoadShedding(
-            @PathVariable Long forecastId) {
-        return loadSheddingService.triggerLoadShedding(forecastId);
+    public LoadSheddingEvent trigger(@PathVariable Long forecastId) {
+        return service.triggerLoadShedding(forecastId);
     }
 
     @GetMapping("/{id}")
-    public LoadSheddingEvent getEventById(
-            @PathVariable Long id) {
-        return loadSheddingService.getEventById(id);
+    public LoadSheddingEvent get(@PathVariable Long id) {
+        return service.getEventById(id);
     }
 
     @GetMapping("/zone/{zoneId}")
-    public List<LoadSheddingEvent> getEventsForZone(
-            @PathVariable Long zoneId) {
-        return loadSheddingService.getEventsForZone(zoneId);
+    public List<LoadSheddingEvent> zoneEvents(@PathVariable Long zoneId) {
+        return service.getEventsForZone(zoneId);
     }
 
     @GetMapping
-    public List<LoadSheddingEvent> getAllEvents() {
-        return loadSheddingService.getAllEvents();
+    public List<LoadSheddingEvent> all() {
+        return service.getAllEvents();
     }
 }
