@@ -1,86 +1,63 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.dto.AuthResponse;
 import com.example.demo.entity.AppUser;
+import com.example.demo.exception.BadRequestException;
 import com.example.demo.repository.AppUserRepository;
+import com.example.demo.security.JwtTokenProvider;
 import com.example.demo.service.AppUserService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class AppUserServiceImpl implements AppUserService {
 
-    private final AppUserRepository userRepository;
+    private final AppUserRepository repo;
+    private final PasswordEncoder encoder;
+    private final JwtTokenProvider jwtProvider;
 
-    public AppUserServiceImpl(AppUserRepository userRepository) {
-        this.userRepository = userRepository;
+    public AppUserServiceImpl(AppUserRepository repo,
+                              PasswordEncoder encoder,
+                              JwtTokenProvider jwtProvider) {
+        this.repo = repo;
+        this.encoder = encoder;
+        this.jwtProvider = jwtProvider;
     }
 
-    // ===============================
-    // REGISTER USER
-    // ===============================
     @Override
-    public AppUser registerUser(AppUser user) {
-        user.setActive(true);
-        return userRepository.save(user);
+    public void register(String email, String password, String role) {
+
+        repo.findByEmail(email).ifPresent(u -> {
+            throw new BadRequestException("Email must be unique");
+        });
+
+        AppUser user = AppUser.builder()
+                .email(email)
+                .password(encoder.encode(password))
+                .role(role)
+                .active(true)
+                .build();
+
+        repo.save(user);
     }
 
-    // ===============================
-    // LOGIN (NO JWT)
-    // ===============================
     @Override
-    public AppUser login(String email, String password) {
+    public AuthResponse login(String email, String password) {
 
-        AppUser user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        AppUser user = repo.findByEmail(email)
+                .orElseThrow(() -> new BadRequestException("Invalid credentials"));
 
-        if (!user.getPassword().equals(password)) {
-            throw new RuntimeException("Invalid password");
+        if (!encoder.matches(password, user.getPassword())) {
+            throw new BadRequestException("Invalid credentials");
         }
 
-        if (!user.isActive()) {
-            throw new RuntimeException("User is deactivated");
-        }
+        String token = jwtProvider.createToken(user);
 
-        return user;
-    }
-
-    // ===============================
-    // GET USER BY ID
-    // ===============================
-    @Override
-    public AppUser getUserById(Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-    }
-
-    // ===============================
-    // GET ALL USERS
-    // ===============================
-    @Override
-    public List<AppUser> getAllUsers() {
-        return userRepository.findAll();
-    }
-
-    // ===============================
-    // DEACTIVATE USER
-    // ===============================
-    @Override
-    public AppUser deactivateUser(Long id) {
-        AppUser user = getUserById(id);
-        user.setActive(false);
-        return userRepository.save(user);
-    }
-
-    @Override
-    public AppUser getByEmail(String email) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getByEmail'");
-    }
-
-    @Override
-    public AppUser register(String email, String password, String role) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'register'");
+        return new AuthResponse(
+                token,
+                user.getId(),
+                user.getEmail(),
+                user.getRole()
+        );
     }
 }

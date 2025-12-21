@@ -1,22 +1,10 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.AppUser;
-
-import java.util.List;
+import com.example.demo.dto.AuthResponse;
 
 public interface AppUserService {
 
-    AppUser registerUser(AppUser user);
+    void register(String email, String password, String role);
 
-    AppUser getUserById(Long id);
-
-    List<AppUser> getAllUsers();
-
-    AppUser deactivateUser(Long id);
-
-    AppUser getByEmail(String email);
-
-    AppUser register(String email, String password, String role);
-
-    AppUser login(String email, String password);
+    AuthResponse login(String email, String password);
 }
