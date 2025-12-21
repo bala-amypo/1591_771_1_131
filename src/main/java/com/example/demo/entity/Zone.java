@@ -1,14 +1,11 @@
 package com.example.demo.entity;
 
+import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
-// Change javax to jakarta
-import jakarta.persistence.*; 
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "zones")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -29,9 +26,17 @@ public class Zone {
     @Builder.Default
     private Boolean active = true;
 
-    @CreationTimestamp
     private LocalDateTime createdAt;
-
-    @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
 }
