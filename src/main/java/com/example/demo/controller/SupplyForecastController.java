@@ -10,39 +10,35 @@ import java.util.List;
 @RequestMapping("/api/supply-forecasts")
 public class SupplyForecastController {
 
-    private final SupplyForecastService supplyForecastService;
+    private final SupplyForecastService service;
 
-    public SupplyForecastController(
-            SupplyForecastService supplyForecastService) {
-        this.supplyForecastService = supplyForecastService;
+    public SupplyForecastController(SupplyForecastService service) {
+        this.service = service;
     }
 
     @PostMapping
-    public SupplyForecast createForecast(
-            @RequestBody SupplyForecast forecast) {
-        return supplyForecastService.createForecast(forecast);
+    public SupplyForecast create(@RequestBody SupplyForecast f) {
+        return service.createForecast(f);
     }
 
     @PutMapping("/{id}")
-    public SupplyForecast updateForecast(
-            @PathVariable Long id,
-            @RequestBody SupplyForecast forecast) {
-        return supplyForecastService.updateForecast(id, forecast);
+    public SupplyForecast update(@PathVariable Long id,
+                                 @RequestBody SupplyForecast f) {
+        return service.updateForecast(id, f);
     }
 
     @GetMapping("/{id}")
-    public SupplyForecast getForecastById(
-            @PathVariable Long id) {
-        return supplyForecastService.getForecastById(id);
+    public SupplyForecast get(@PathVariable Long id) {
+        return service.getForecastById(id);
     }
 
     @GetMapping("/latest")
-    public SupplyForecast getLatestForecast() {
-        return supplyForecastService.getLatestForecast();
+    public SupplyForecast latest() {
+        return service.getLatestForecast();
     }
 
     @GetMapping
-    public List<SupplyForecast> getAllForecasts() {
-        return supplyForecastService.getAllForecasts();
+    public List<SupplyForecast> list() {
+        return service.getAllForecasts();
     }
 }
