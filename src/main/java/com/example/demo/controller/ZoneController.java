@@ -4,7 +4,6 @@ import com.example.demo.entity.Zone;
 import com.example.demo.service.ZoneService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -22,6 +21,11 @@ public class ZoneController {
         return ResponseEntity.ok(zoneService.createZone(zone));
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Zone> updateZone(@PathVariable Long id, @RequestBody Zone zone) {
+        return ResponseEntity.ok(zoneService.updateZone(id, zone));
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Zone> getZone(@PathVariable Long id) {
         return ResponseEntity.ok(zoneService.getZoneById(id));
@@ -30,11 +34,6 @@ public class ZoneController {
     @GetMapping("/")
     public ResponseEntity<List<Zone>> getAllZones() {
         return ResponseEntity.ok(zoneService.getAllZones());
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Zone> updateZone(@PathVariable Long id, @RequestBody Zone zone) {
-        return ResponseEntity.ok(zoneService.updateZone(id, zone));
     }
 
     @PutMapping("/{id}/deactivate")

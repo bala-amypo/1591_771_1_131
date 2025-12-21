@@ -4,60 +4,58 @@ import com.example.demo.entity.Zone;
 import com.example.demo.repository.ZoneRepository;
 import com.example.demo.service.ZoneService;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
 public class ZoneServiceImpl implements ZoneService {
 
-    private final ZoneRepository zoneRepository;
+    private final ZoneRepository zoneRepo;
 
-    // Strict constructor injection as required
-    public ZoneServiceImpl(ZoneRepository zoneRepository) {
-        this.zoneRepository = zoneRepository;
+    // Constructor injection in exact order for testing
+    public ZoneServiceImpl(ZoneRepository zoneRepo) {
+        this.zoneRepo = zoneRepo;
     }
 
     @Override
     public Zone createZone(Zone zone) {
-        // Validation: Priority >= 1
         if (zone.getPriorityLevel() < 1) {
             throw new RuntimeException("priorityLevel must be >= 1");
         }
-        // Validation: Unique Name
-        if (zoneRepository.findByZoneName(zone.getZoneName()).isPresent()) {
+        if (zoneRepo.findByZoneName(zone.getZoneName()).isPresent()) {
             throw new RuntimeException("zoneName must be unique");
         }
-        zone.setActive(true); // Default value
-        return zoneRepository.save(zone);
+        zone.setActive(true);
+        return zoneRepo.save(zone);
     }
 
     @Override
     public Zone updateZone(Long id, Zone zoneDetails) {
-        Zone zone = zoneRepository.findById(id)
+        Zone zone = zoneRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Zone not found"));
         
         zone.setZoneName(zoneDetails.getZoneName());
         zone.setPriorityLevel(zoneDetails.getPriorityLevel());
         zone.setPopulation(zoneDetails.getPopulation());
-        return zoneRepository.save(zone);
+        // updatedAt is handled by @UpdateTimestamp in entity
+        return zoneRepo.save(zone);
     }
 
     @Override
     public Zone getZoneById(Long id) {
-        return zoneRepository.findById(id)
+        return zoneRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Zone not found"));
     }
 
     @Override
     public List<Zone> getAllZones() {
-        return zoneRepository.findAll();
+        return zoneRepo.findAll();
     }
 
     @Override
     public void deactivateZone(Long id) {
-        Zone zone = zoneRepository.findById(id)
+        Zone zone = zoneRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Zone not found"));
         zone.setActive(false);
-        zoneRepository.save(zone);
+        zoneRepo.save(zone);
     }
 }

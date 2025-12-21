@@ -7,7 +7,5 @@ import java.util.Optional;
 
 public interface ZoneRepository extends JpaRepository<Zone, Long> {
     Optional<Zone> findByZoneName(String zoneName);
-    
-    // Used for selecting zones to shed (lowest priority first)
     List<Zone> findByActiveTrueOrderByPriorityLevelAsc();
 }
