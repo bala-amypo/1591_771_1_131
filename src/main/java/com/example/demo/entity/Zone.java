@@ -6,7 +6,8 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "zones")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -23,14 +24,15 @@ public class Zone {
 
     private Integer population;
 
-    @Builder.Default
-    private Boolean active = true;
+    @Column(nullable = false)
+    private Boolean active;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
     @PrePersist
     protected void onCreate() {
+        if (active == null) active = true;
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
     }

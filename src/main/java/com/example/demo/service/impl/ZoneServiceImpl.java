@@ -1,4 +1,3 @@
-// Service Implementation
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.Zone;
@@ -14,14 +13,13 @@ public class ZoneServiceImpl implements ZoneService {
 
     private final ZoneRepository zoneRepository;
 
-    // Constructor Injection as required by rules
     public ZoneServiceImpl(ZoneRepository zoneRepository) {
         this.zoneRepository = zoneRepository;
     }
 
     @Override
     public Zone createZone(Zone zone) {
-        if (zone.getPriorityLevel() < 1) {
+        if (zone.getPriorityLevel() == null || zone.getPriorityLevel() < 1) {
             throw new BadRequestException("Priority level must be >= 1");
         }
         if (zoneRepository.findByZoneName(zone.getZoneName()).isPresent()) {
