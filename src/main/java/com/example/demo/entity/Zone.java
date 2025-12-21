@@ -3,7 +3,9 @@ package com.example.demo.entity;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import javax.persistence.*;
+
+// Change javax to jakarta
+import jakarta.persistence.*; 
 import java.time.LocalDateTime;
 
 @Entity
