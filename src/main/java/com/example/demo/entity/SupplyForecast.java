@@ -5,7 +5,7 @@ import lombok.*;
 import java.time.Instant;
 
 @Entity
-@Table(name = "supply_forecast")
+@Table(name = "supply_forecast") // Maps to SQL table
 @Data
 @Builder
 @NoArgsConstructor
@@ -13,17 +13,17 @@ import java.time.Instant;
 public class SupplyForecast {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; //
+    private Long id;
 
-    @Column(name = "available_supply_mw")
-    private Double availableSupplyMW; //
+    @Column(name = "available_supplymw")
+    private Double availableSupplyMW;
 
-    private Instant forecastStart; //
-    private Instant forecastEnd; //
-    private Instant generatedAt; //
+    private Instant forecastStart;
+    private Instant forecastEnd;
+    private Instant generatedAt;
 
     @PrePersist
     protected void onCreate() {
-        this.generatedAt = Instant.now(); // Sets timestamp automatically
+        this.generatedAt = Instant.now(); // Required for getLatestForecast logic
     }
 }

@@ -5,7 +5,7 @@ import lombok.*;
 import java.time.Instant;
 
 @Entity
-@Table(name = "load_shedding_events")
+@Table(name = "load_shedding_event")
 @Data
 @Builder
 @NoArgsConstructor
@@ -13,15 +13,15 @@ import java.time.Instant;
 public class LoadSheddingEvent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // Primary Key
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "zone_id", nullable = false)
-    private Zone zone; // The zone affected by shedding
+    private Zone zone;
 
     private Instant eventStart;
-    private Instant eventEnd; // Optional initially
+    private Instant eventEnd;
     private String reason;
-    private Long triggeredByForecastId; // Reference to the forecast that caused the trigger
-    private Double expectedDemandReductionMW; // Rule: Must be >= 0
+    private Long triggeredByForecastId;
+    private Double expectedDemandReductionMW;
 }
