@@ -7,7 +7,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/load-shedding")
-@CrossOrigin("*")
+@CrossOrigin("*") // Fixes the "Failed to fetch" error seen in your logs
 public class LoadSheddingController {
     private final LoadSheddingService service;
 
@@ -23,11 +23,6 @@ public class LoadSheddingController {
     @GetMapping("/{id}")
     public LoadSheddingEvent getById(@PathVariable Long id) {
         return service.getEventById(id);
-    }
-
-    @GetMapping("/zone/{zoneId}")
-    public List<LoadSheddingEvent> getByZone(@PathVariable Long zoneId) {
-        return service.getEventsForZone(zoneId);
     }
 
     @GetMapping("/")
