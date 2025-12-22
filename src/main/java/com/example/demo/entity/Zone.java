@@ -1,41 +1,36 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "zones")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Zone {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    @Column(unique = true, nullable = false)
+    private String zoneName;
 
-    // 1 (Highest) to 10 (Lowest)
+    @Column(nullable = false)
     private Integer priorityLevel;
 
-    private Boolean active;
+    private Integer population;
 
-    // Constructors
-    public Zone() {}
+    @Builder.Default
+    private Boolean active = true;
 
-    public Zone(String name, Integer priorityLevel, Boolean active) {
-        this.name = name;
-        this.priorityLevel = priorityLevel;
-        this.active = active;
-    }
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 
-    // Getters and Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-
-    public Integer getPriorityLevel() { return priorityLevel; }
-    public void setPriorityLevel(Integer priorityLevel) { this.priorityLevel = priorityLevel; }
-
-    public Boolean getActive() { return active; }
-    public void setActive(Boolean active) { this.active = active; }
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 }
