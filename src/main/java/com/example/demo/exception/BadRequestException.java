@@ -1,11 +1,11 @@
-package com.example.demo.exception; // Ensure this is exactly com.example.demo.exception
-
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
-
-@ResponseStatus(HttpStatus.BAD_REQUEST)
+// BadRequestException.java
+package com.example.demo.exception;
 public class BadRequestException extends RuntimeException {
-    public BadRequestException(String message) {
-        super(message);
-    }
+    public BadRequestException(String message) { super(message); }
+}
+
+// ResourceNotFoundException.java
+package com.example.demo.exception;
+public class ResourceNotFoundException extends RuntimeException {
+    public ResourceNotFoundException(String message) { super(message); }
 }
