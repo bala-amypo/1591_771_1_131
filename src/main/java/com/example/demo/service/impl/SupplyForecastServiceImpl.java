@@ -12,32 +12,50 @@ import java.util.List;
 public class SupplyForecastServiceImpl implements SupplyForecastService {
     private final SupplyForecastRepository forecastRepo;
 
-    // Constructor injection as required by tests
+    // Constructor injection only
     public SupplyForecastServiceImpl(SupplyForecastRepository forecastRepo) {
         this.forecastRepo = forecastRepo;
     }
 
     @Override
     public SupplyForecast createForecast(SupplyForecast forecast) {
-        if (forecast.getAvailableSupplyMW() < 0) {
-            throw new BadRequestException("availableSupplyMW must be >= 0");
+        validateForecast(forecast); //
+        return forecastRepo.save(forecast);
+    }
+
+    @Override
+    public SupplyForecast updateForecast(Long id, SupplyForecast forecast) {
+        if (!forecastRepo.existsById(id)) {
+            throw new ResourceNotFoundException("Forecast not found"); //
         }
-        if (forecast.getForecastStart().isAfter(forecast.getForecastEnd())) {
-            throw new BadRequestException("Invalid range: forecastStart must be before forecastEnd");
-        }
+        validateForecast(forecast);
+        forecast.setId(id);
         return forecastRepo.save(forecast);
     }
 
     @Override
     public SupplyForecast getLatestForecast() {
         return forecastRepo.findFirstByOrderByGeneratedAtDesc()
-                .orElseThrow(() -> new ResourceNotFoundException("No forecasts"));
+                .orElseThrow(() -> new ResourceNotFoundException("No forecasts")); //
     }
 
     @Override
     public List<SupplyForecast> getAllForecasts() {
-        return forecastRepo.findAll();
+        return forecastRepo.findAll(); //
     }
-    
-    // Additional methods for update and getById omitted for brevity but follow same pattern
+
+    @Override
+    public SupplyForecast getForecastById(Long id) {
+        return forecastRepo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Forecast not found")); //
+    }
+
+    private void validateForecast(SupplyForecast forecast) {
+        if (forecast.getAvailableSupplyMW() < 0) {
+            throw new BadRequestException("availableSupplyMW must be >= 0"); //
+        }
+        if (forecast.getForecastStart().isAfter(forecast.getForecastEnd())) {
+            throw new BadRequestException("Invalid range"); //
+        }
+    }
 }

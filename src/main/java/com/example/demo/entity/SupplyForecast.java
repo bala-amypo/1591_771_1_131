@@ -13,17 +13,17 @@ import java.time.Instant;
 public class SupplyForecast {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id; //
 
-    @Column(name = "available_supplymw")
-    private Double availableSupplyMW;
+    @Column(name = "available_supply_mw")
+    private Double availableSupplyMW; //
 
-    private Instant forecastStart;
-    private Instant forecastEnd;
-    private Instant generatedAt;
+    private Instant forecastStart; //
+    private Instant forecastEnd; //
+    private Instant generatedAt; //
 
     @PrePersist
     protected void onCreate() {
-        this.generatedAt = Instant.now(); // Auto-set for repository sorting
+        this.generatedAt = Instant.now(); // Sets timestamp automatically
     }
 }

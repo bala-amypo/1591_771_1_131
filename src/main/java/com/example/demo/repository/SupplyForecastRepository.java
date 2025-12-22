@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface SupplyForecastRepository extends JpaRepository<SupplyForecast, Long> {
-    // Required for the getLatestForecast service method
+    // Used to get the latest forecast based on generation time
     Optional<SupplyForecast> findFirstByOrderByGeneratedAtDesc();
 }
