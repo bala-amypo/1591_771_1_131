@@ -1,13 +1,15 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.*; // This import is crucial
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 
 @Entity
-@Data
+@Table(name = "zones")
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
