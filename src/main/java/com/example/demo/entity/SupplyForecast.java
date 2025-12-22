@@ -5,8 +5,8 @@ import lombok.*;
 import java.time.Instant;
 
 @Entity
+@Table(name = "supply_forecast")
 @Data
-@Table(name = "supplyForecast")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,13 +15,15 @@ public class SupplyForecast {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "available_supplymw")
     private Double availableSupplyMW;
+
     private Instant forecastStart;
     private Instant forecastEnd;
     private Instant generatedAt;
 
     @PrePersist
-    protected void onPersist() {
-        this.generatedAt = Instant.now(); // Auto-set on creation
+    protected void onCreate() {
+        this.generatedAt = Instant.now(); // Auto-set for repository sorting
     }
 }
