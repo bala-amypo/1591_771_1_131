@@ -13,30 +13,31 @@ public class ZoneServiceImpl implements ZoneService {
 
     private final ZoneRepository zoneRepository;
 
+    // Required constructor injection for tests
     public ZoneServiceImpl(ZoneRepository zoneRepository) {
         this.zoneRepository = zoneRepository;
     }
 
     @Override
     public Zone createZone(Zone zone) {
-        if (zone.getPriorityLevel() == null || zone.getPriorityLevel() < 1) {
-            throw new BadRequestException("Priority level must be >= 1");
+        if (zone.getPriorityLevel() < 1) {
+            throw new BadRequestException("priorityLevel must be >= 1");
         }
         if (zoneRepository.findByZoneName(zone.getZoneName()).isPresent()) {
-            throw new BadRequestException("Zone name must be unique");
+            throw new BadRequestException("zoneName must be unique");
         }
         return zoneRepository.save(zone);
     }
 
     @Override
-    public Zone updateZone(Long id, Zone zoneDetails) {
-        Zone zone = zoneRepository.findById(id)
+    public Zone updateZone(Long id, Zone zone) {
+        Zone existing = zoneRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Zone not found"));
         
-        zone.setZoneName(zoneDetails.getZoneName());
-        zone.setPriorityLevel(zoneDetails.getPriorityLevel());
-        zone.setPopulation(zoneDetails.getPopulation());
-        return zoneRepository.save(zone);
+        existing.setZoneName(zone.getZoneName());
+        existing.setPriorityLevel(zone.getPriorityLevel());
+        existing.setPopulation(zone.getPopulation());
+        return zoneRepository.save(existing);
     }
 
     @Override
