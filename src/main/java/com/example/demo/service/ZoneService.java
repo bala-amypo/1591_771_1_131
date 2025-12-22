@@ -8,5 +8,5 @@ public interface ZoneService {
     Zone updateZone(Long id, Zone zone);
     Zone getZoneById(Long id);
     List<Zone> getAllZones();
-    List<Zone> getActiveZones();
+    void deactivateZone(Long id);
 }

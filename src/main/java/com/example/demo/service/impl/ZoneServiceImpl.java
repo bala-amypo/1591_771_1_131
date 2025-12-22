@@ -1,6 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.Zone;
+import com.example.demo.exception.BadRequestException;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.ZoneRepository;
 import com.example.demo.service.ZoneService;
@@ -12,26 +13,33 @@ public class ZoneServiceImpl implements ZoneService {
 
     private final ZoneRepository zoneRepository;
 
-    // Constructor injection only
+    // Strict constructor injection as required
     public ZoneServiceImpl(ZoneRepository zoneRepository) {
         this.zoneRepository = zoneRepository;
     }
 
     @Override
     public Zone createZone(Zone zone) {
+        if (zone.getPriorityLevel() != null && zone.getPriorityLevel() < 1) {
+            throw new BadRequestException("priorityLevel must be >= 1");
+        }
+        if (zoneRepository.findByZoneName(zone.getZoneName()).isPresent()) {
+            throw new BadRequestException("zoneName must be unique");
+        }
+        // active = true is handled by Lombok @Builder.Default or Entity default
         return zoneRepository.save(zone);
     }
 
     @Override
     public Zone updateZone(Long id, Zone zoneDetails) {
-        Zone zone = zoneRepository.findById(id)
+        Zone existingZone = zoneRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Zone not found"));
+
+        existingZone.setZoneName(zoneDetails.getZoneName());
+        existingZone.setPriorityLevel(zoneDetails.getPriorityLevel());
+        existingZone.setPopulation(zoneDetails.getPopulation());
         
-        zone.setName(zoneDetails.getName());
-        zone.setPriorityLevel(zoneDetails.getPriorityLevel());
-        zone.setActive(zoneDetails.getActive());
-        
-        return zoneRepository.save(zone);
+        return zoneRepository.save(existingZone);
     }
 
     @Override
@@ -46,7 +54,10 @@ public class ZoneServiceImpl implements ZoneService {
     }
 
     @Override
-    public List<Zone> getActiveZones() {
-        return zoneRepository.findByActiveTrueOrderByPriorityLevelAsc();
+    public void deactivateZone(Long id) {
+        Zone zone = zoneRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Zone not found"));
+        zone.setActive(false);
+        zoneRepository.save(zone);
     }
 }

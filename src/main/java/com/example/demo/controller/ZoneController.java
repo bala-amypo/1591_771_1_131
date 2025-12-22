@@ -13,7 +13,6 @@ public class ZoneController {
 
     private final ZoneService zoneService;
 
-    // Constructor injection as required
     public ZoneController(ZoneService zoneService) {
         this.zoneService = zoneService;
     }
@@ -21,6 +20,11 @@ public class ZoneController {
     @PostMapping("/")
     public ResponseEntity<Zone> createZone(@RequestBody Zone zone) {
         return ResponseEntity.ok(zoneService.createZone(zone));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Zone> updateZone(@PathVariable Long id, @RequestBody Zone zone) {
+        return ResponseEntity.ok(zoneService.updateZone(id, zone));
     }
 
     @GetMapping("/{id}")
@@ -33,13 +37,9 @@ public class ZoneController {
         return ResponseEntity.ok(zoneService.getAllZones());
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Zone> updateZone(@PathVariable Long id, @RequestBody Zone zone) {
-        return ResponseEntity.ok(zoneService.updateZone(id, zone));
-    }
-
-    @GetMapping("/active")
-    public ResponseEntity<List<Zone>> getActiveZones() {
-        return ResponseEntity.ok(zoneService.getActiveZones());
+    @PutMapping("/{id}/deactivate")
+    public ResponseEntity<Void> deactivateZone(@PathVariable Long id) {
+        zoneService.deactivateZone(id);
+        return ResponseEntity.noContent().build();
     }
 }
