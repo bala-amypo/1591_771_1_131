@@ -6,6 +6,7 @@ import java.time.Instant;
 
 @Entity
 @Data
+@Table(name = "supplyForecast")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
