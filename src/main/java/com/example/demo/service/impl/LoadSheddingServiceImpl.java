@@ -15,11 +15,9 @@ public class LoadSheddingServiceImpl implements LoadSheddingService {
     private final DemandReadingRepository readingRepo;
     private final LoadSheddingEventRepository eventRepo;
 
-    // Strict constructor order: Forecast, Zone, Reading, Event
-    public LoadSheddingServiceImpl(SupplyForecastRepository forecastRepo, 
-                                   ZoneRepository zoneRepo, 
-                                   DemandReadingRepository readingRepo, 
-                                   LoadSheddingEventRepository eventRepo) {
+    // Constructor order: forecast, zone, reading, event
+    public LoadSheddingServiceImpl(SupplyForecastRepository forecastRepo, ZoneRepository zoneRepo, 
+                                   DemandReadingRepository readingRepo, LoadSheddingEventRepository eventRepo) {
         this.forecastRepo = forecastRepo;
         this.zoneRepo = zoneRepo;
         this.readingRepo = readingRepo;
@@ -29,7 +27,7 @@ public class LoadSheddingServiceImpl implements LoadSheddingService {
     @Override
     public LoadSheddingEvent triggerLoadShedding(Long forecastId) {
         SupplyForecast forecast = forecastRepo.findById(forecastId)
-                .orElseThrow(() -> new ResourceNotFoundException("Forecast not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Forecast not found")); //
 
         List<Zone> activeZones = zoneRepo.findByActiveTrueOrderByPriorityLevelAsc();
         double totalDemand = 0;
@@ -39,16 +37,16 @@ public class LoadSheddingServiceImpl implements LoadSheddingService {
                     .map(DemandReading::getDemandMW).orElse(0.0);
         }
 
-        // Logic causing the 400 error in your screenshot
+        // Throw BadRequest if no overload exists
         if (totalDemand <= forecast.getAvailableSupplyMW()) {
-            throw new BadRequestException("No overload"); 
+            throw new BadRequestException("No overload");
         }
 
         if (activeZones.isEmpty()) {
-            throw new BadRequestException("No suitable candidate zones");
+            throw new BadRequestException("No suitable candidate zones"); //
         }
 
-        // Select lowest-priority (highest numeric value) zone
+        // Select lowest-priority zone (last in list)
         Zone targetZone = activeZones.get(activeZones.size() - 1);
         double demandToShed = readingRepo.findFirstByZoneIdOrderByRecordedAtDesc(targetZone.getId())
                 .map(DemandReading::getDemandMW).orElse(0.0);
@@ -61,21 +59,22 @@ public class LoadSheddingServiceImpl implements LoadSheddingService {
                 .expectedDemandReductionMW(demandToShed)
                 .build();
 
-        return eventRepo.save(event);
+        return eventRepo.save(event); // Successful save makes data visible in SQL
     }
 
     @Override
     public LoadSheddingEvent getEventById(Long id) {
-        return eventRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Event not found"));
+        return eventRepo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Event not found")); //
     }
 
     @Override
     public List<LoadSheddingEvent> getEventsForZone(Long zoneId) {
-        return eventRepo.findByZoneIdOrderByEventStartDesc(zoneId);
+        return eventRepo.findByZoneIdOrderByEventStartDesc(zoneId); //
     }
 
     @Override
     public List<LoadSheddingEvent> getAllEvents() {
-        return eventRepo.findAll();
+        return eventRepo.findAll(); //
     }
 }
