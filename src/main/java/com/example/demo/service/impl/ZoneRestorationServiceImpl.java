@@ -1,5 +1,4 @@
 package com.example.demo.service.impl;
-
 import com.example.demo.entity.*;
 import com.example.demo.exception.*;
 import com.example.demo.repository.*;
@@ -8,7 +7,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ZoneRestorationServiceImpl implements com.example.demo.service.ZoneRestorationService {
+public class ZoneRestorationServiceImpl implements ZoneRestorationService {
     private final ZoneRestorationRecordRepository restorationRepo;
     private final LoadSheddingEventRepository eventRepo;
     private final ZoneRepository zoneRepo;
@@ -32,14 +31,12 @@ public class ZoneRestorationServiceImpl implements com.example.demo.service.Zone
         if (!record.getRestoredAt().isAfter(event.getEventStart())) {
             throw new BadRequestException("restoredAt must be after event start");
         }
-
         return restorationRepo.save(record);
     }
 
     @Override
     public ZoneRestorationRecord getRecordById(Long id) {
-        return restorationRepo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Record not found"));
+        return restorationRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Record not found"));
     }
 
     @Override
