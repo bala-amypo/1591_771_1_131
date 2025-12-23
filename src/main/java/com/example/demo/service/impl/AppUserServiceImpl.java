@@ -16,19 +16,19 @@ public class AppUserServiceImpl implements AppUserService {
 
     @Override
     public AppUser register(String email, String password, String role) {
-        // Check for email uniqueness
+        
         if (userRepository.findByEmail(email).isPresent()) {
             throw new BadRequestException("Email must be unique"); //
         }
 
-        // Create and save new user
+     
         AppUser user = new AppUser();
         user.setEmail(email);
-        user.setPassword(password); // Encryption usually happens here
+        user.setPassword(password); 
         user.setRole(role);
         user.setActive(true);
 
-        return userRepository.save(user); // Persists to SQL database
+        return userRepository.save(user); 
     }
 
     @Override

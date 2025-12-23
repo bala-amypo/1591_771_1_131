@@ -33,7 +33,7 @@ public class DemandReadingServiceImpl implements DemandReadingService {
             throw new BadRequestException("demandMW must be >= 0");
         }
 
-        // Rule: recordedAt not in the future
+
         if (reading.getRecordedAt() != null && reading.getRecordedAt().isAfter(Instant.now())) {
             throw new BadRequestException("recordedAt must not be in the future");
         }
