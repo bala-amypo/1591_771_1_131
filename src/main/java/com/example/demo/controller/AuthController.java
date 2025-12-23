@@ -1,8 +1,8 @@
 package com.example.demo.controller;
+
 import com.example.demo.entity.AppUser;
 import com.example.demo.service.impl.AppUserServiceImpl;
 import org.springframework.web.bind.annotation.*;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
@@ -15,16 +15,12 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public AppUser register(@RequestBody Map<String, String> request) {
-        return userService.register(
-            request.get("email"), 
-            request.get("password"), 
-            request.get("role")
-        );
+    public AppUser register(@RequestBody AppUser user) {
+        return userService.register(user);
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody Map<String, String> request) {
-        return userService.login(request.get("email"), request.get("password"));
+    public String login(@RequestParam String email, @RequestParam String password) {
+        return userService.login(email, password);
     }
 }

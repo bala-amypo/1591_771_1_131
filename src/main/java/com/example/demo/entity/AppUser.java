@@ -16,30 +16,18 @@ public class AppUser {
     private String role;
     private Boolean active;
 
-    // 1. MUST HAVE: No-argument constructor for JPA
+    // Default constructor for JPA
     public AppUser() {}
 
-    // 2. MUST HAVE: 3-argument constructor for the Service logic
-    public AppUser(String email, String password, String role) {
-        this.email = email;
-        this.password = password;
-        this.role = role;
-        this.active = true;
-    }
-
-    // 3. MANUAL GETTERS AND SETTERS (Since Lombok is failing)
+    // Getters and Setters (Required for Swagger to see fields)
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
-
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
-
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
-
     public String getRole() { return role; }
     public void setRole(String role) { this.role = role; }
-
     public Boolean getActive() { return active; }
     public void setActive(Boolean active) { this.active = active; }
 }
