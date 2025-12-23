@@ -1,4 +1,5 @@
 package com.example.demo.entity;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -7,21 +8,14 @@ public class AppUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(unique = true, nullable = false)
     private String email;
     private String password;
     private String role;
-    private Boolean active = true;
+    private Boolean active;
 
-    public AppUser() {}
-    public AppUser(String email, String password, String role) {
-        this.email = email;
-        this.password = password;
-        this.role = role;
-        this.active = true;
-    }
-    // Getters and Setters
+    // MANUALLY ADD THESE TO ALL ENTITIES TO STOP COMPILATION ERRORS
     public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
     public String getPassword() { return password; }
