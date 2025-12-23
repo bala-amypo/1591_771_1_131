@@ -10,16 +10,15 @@ public class AppUser {
     private Long id;
 
     @Column(unique = true, nullable = false)
-    private String email;
+    private String email; //
 
     private String password;
     private String role;
-    private Boolean active;
+    private Boolean active; //
 
-    // Default constructor for JPA
     public AppUser() {}
 
-    // Getters and Setters (Required for Swagger to see fields)
+    // Manual Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public String getEmail() { return email; }

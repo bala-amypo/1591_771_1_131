@@ -1,26 +1,32 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.AppUser;
-import com.example.demo.service.impl.AppUserServiceImpl;
+import com.example.demo.service.AppUserService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
 @CrossOrigin("*")
 public class AuthController {
-    private final AppUserServiceImpl userService;
+    private final AppUserService userService;
 
-    public AuthController(AppUserServiceImpl userService) {
+    public AuthController(AppUserService userService) {
         this.userService = userService;
     }
 
     @PostMapping("/register")
     public AppUser register(@RequestBody AppUser user) {
-        return userService.register(user);
+        // Extracting fields from the entity to match the Service method signature
+        return userService.register(
+            user.getEmail(), 
+            user.getPassword(), 
+            user.getRole()
+        );
     }
 
     @PostMapping("/login")
-    public String login(@RequestParam String email, @RequestParam String password) {
-        return userService.login(email, password);
+    public String login(@RequestBody AppUser user) {
+        // Only email and password are used for login logic
+        return userService.login(user.getEmail(), user.getPassword());
     }
 }
