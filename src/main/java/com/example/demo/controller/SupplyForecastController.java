@@ -7,7 +7,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/supply-forecasts")
-@CrossOrigin("*") // Allows Swagger to connect directly to this controller
+@CrossOrigin("*") 
 public class SupplyForecastController {
     private final SupplyForecastService forecastService;
 

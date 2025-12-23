@@ -16,7 +16,6 @@ public class AuthController {
 
     @PostMapping("/register")
     public AppUser register(@RequestBody AppUser user) {
-        // Extracting fields from the entity to match the Service method signature
         return userService.register(
             user.getEmail(), 
             user.getPassword(), 
@@ -26,7 +25,6 @@ public class AuthController {
 
     @PostMapping("/login")
     public String login(@RequestBody AppUser user) {
-        // Only email and password are used for login logic
         return userService.login(user.getEmail(), user.getPassword());
     }
 }
