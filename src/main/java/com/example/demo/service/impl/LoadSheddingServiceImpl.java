@@ -26,7 +26,7 @@ public class LoadSheddingServiceImpl implements LoadSheddingService {
     @Override
     public LoadSheddingEvent triggerLoadShedding(Long forecastId) {
         SupplyForecast forecast = forecastRepo.findById(forecastId)
-                .orElseThrow(() -> new ResourceNotFoundException("Forecast not found")); //
+                .orElseThrow(() -> new ResourceNotFoundException("Forecast not found")); 
 
         List<Zone> activeZones = zoneRepo.findByActiveTrueOrderByPriorityLevelAsc();
         double totalDemand = 0;

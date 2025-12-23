@@ -18,7 +18,7 @@ public class AppUserServiceImpl implements AppUserService {
     public AppUser register(String email, String password, String role) {
         
         if (userRepository.findByEmail(email).isPresent()) {
-            throw new BadRequestException("Email must be unique"); //
+            throw new BadRequestException("Email must be unique"); 
         }
 
      
@@ -34,7 +34,7 @@ public class AppUserServiceImpl implements AppUserService {
     @Override
     public String login(String email, String password) {
         AppUser user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new BadRequestException("Invalid credentials")); //
+                .orElseThrow(() -> new BadRequestException("Invalid credentials")); 
 
         if (!user.getPassword().equals(password)) {
             throw new BadRequestException("Invalid credentials");

@@ -7,7 +7,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/load-shedding")
-@CrossOrigin("*") // Fixes CORS "Failed to fetch" in Swagger
+@CrossOrigin("*")
 public class LoadSheddingController {
 
     private final LoadSheddingService loadSheddingService;
