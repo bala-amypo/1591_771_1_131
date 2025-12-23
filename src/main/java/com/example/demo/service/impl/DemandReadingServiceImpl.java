@@ -22,13 +22,13 @@ public class DemandReadingServiceImpl implements DemandReadingService {
 
     @Override
     public DemandReading createReading(DemandReading reading) {
-        // Rule: Zone must exist
+      
         if (reading.getZone() == null || reading.getZone().getId() == null || 
             !zoneRepo.existsById(reading.getZone().getId())) {
             throw new ResourceNotFoundException("Zone not found");
         }
 
-        // Rule: demandMW >= 0
+      
         if (reading.getDemandMW() == null || reading.getDemandMW() < 0) {
             throw new BadRequestException("demandMW must be >= 0");
         }
