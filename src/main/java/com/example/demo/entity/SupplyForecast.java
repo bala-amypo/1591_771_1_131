@@ -5,7 +5,7 @@ import lombok.*;
 import java.time.Instant;
 
 @Entity
-@Table(name = "supply_forecast") // Maps to SQL table
+@Table(name = "supply_forecast") 
 @Data
 @Builder
 @NoArgsConstructor
@@ -24,6 +24,6 @@ public class SupplyForecast {
 
     @PrePersist
     protected void onCreate() {
-        this.generatedAt = Instant.now(); // Required for getLatestForecast logic
+        this.generatedAt = Instant.now(); 
     }
 }
