@@ -1,9 +1,8 @@
 package com.example.demo.entity;
 
 import lombok.*;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import java.time.Instant;
-
 
 @Entity
 @Table(name = "demand_readings")
@@ -12,21 +11,17 @@ import java.time.Instant;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DemandReading {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-   
-    @ManyToOne(fetch = FetchType.EAGER)
+    
+    @ManyToOne
     @JoinColumn(name = "zone_id", nullable = false)
     private Zone zone;
-
     
+    @Column(nullable = false)
     private Double demandMW;
-
-   
-    private Instant recordedAt;
-
     
+    @Column(nullable = false)
+    private Instant recordedAt;
 }
