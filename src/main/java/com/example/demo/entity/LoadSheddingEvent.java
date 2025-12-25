@@ -1,11 +1,11 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.*;
 import lombok.*;
+import javax.persistence.*;
 import java.time.Instant;
 
 @Entity
-@Table(name = "load_shedding_event")
+@Table(name = "load_shedding_events")
 @Data
 @Builder
 @NoArgsConstructor
@@ -14,14 +14,20 @@ public class LoadSheddingEvent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    
     @ManyToOne
-    @JoinColumn(name = "zone_id", nullable = false)
+    @JoinColumn(name = "zone_id")
     private Zone zone;
-
+    
+    @Column(nullable = false)
     private Instant eventStart;
+    
     private Instant eventEnd;
+    
     private String reason;
-    private Long triggeredByForecastId;
+    
     private Double expectedDemandReductionMW;
+    
+    @Builder.Default
+    private Instant createdAt = Instant.now();
 }
