@@ -7,15 +7,15 @@ import java.util.List;
 @RestController @RequestMapping("/api/restorations") @CrossOrigin("*")
 public class ZoneRestorationController {
     private final ZoneRestorationService service;
-    public ZoneRestorationController(ZoneRestorationService service) { this.service = service; }
+        public ZoneRestorationController(ZoneRestorationService service) { this.service = service; }
 
-    @PostMapping("/")
-    public ZoneRestorationRecord create(@RequestBody ZoneRestorationRecord record) {
-        return service.restoreZone(record);
-    }
+            @PostMapping("/")
+                public ZoneRestorationRecord create(@RequestBody ZoneRestorationRecord record) {
+                        return service.restoreZone(record);
+                            }
 
-    @GetMapping("/zone/{zoneId}")
-    public List<ZoneRestorationRecord> getByZone(@PathVariable Long zoneId) {
-        return service.getRecordsForZone(zoneId);
-    }
-}
+                                @GetMapping("/zone/{zoneId}")
+                                    public List<ZoneRestorationRecord> getByZone(@PathVariable Long zoneId) {
+                                            return service.getRecordsForZone(zoneId);
+                                                }
+                                                }
