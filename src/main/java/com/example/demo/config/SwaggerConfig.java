@@ -19,7 +19,7 @@ public class SwaggerConfig {
                         .version("1.0")
                         .description("API for managing smart grid load shedding operations"))
                 .servers(List.of(
-                        new Server().url("https://9317.pro604cr.amypo.ai/")
+                        new Server().url("https://9115.pro604cr.amypo.ai/")
                 ));
     }
 }
