@@ -18,6 +18,13 @@ public class SwaggerConfig {
                         .title("Smart Grid Load Shedding Controller API")
                         .version("1.0")
                         .description("API for managing smart grid load shedding operations"))
+                .components(new Components()
+                        .addSecuritySchemes("bearerAuth",
+                                new SecurityScheme()
+                                        .type(SecurityScheme.Type.HTTP)
+                                        .scheme("bearer")
+                                        .bearerFormat("JWT")
+                                        .description("Enter JWT token")));
                 .servers(List.of(
                         new Server().url("https://9115.pro604cr.amypo.ai/")
                 ));

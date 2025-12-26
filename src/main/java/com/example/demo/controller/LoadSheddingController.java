@@ -9,6 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/load-shedding")
+@securityRequirement(name="bearerAuth")
 public class LoadSheddingController {
     
     private final LoadSheddingService loadSheddingService;

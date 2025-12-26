@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/demand-readings")
-@securityRequirement(name="bear
+@securityRequirement(name="bearerAuth")
 public class DemandReadingController {
     
     private final DemandReadingService demandReadingService;
