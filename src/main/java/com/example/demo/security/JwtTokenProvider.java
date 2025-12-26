@@ -1,29 +1,53 @@
 package com.example.demo.security;
 
-import org.springframework.security.authentication.AbstractAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
+import com.example.demo.entity.AppUser;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+import org.springframework.stereotype.Component;
 
-import java.util.Collection;
+import java.security.Key;
+import java.util.Date;
 
-public class JwtAuthenticationToken extends AbstractAuthenticationToken {
+@Component
+public class JwtTokenProvider {
     
-    private final Object principal;
-    private final String token;
+    private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    private final long validityInMilliseconds = 3600000; // 1 hour
 
-    public JwtAuthenticationToken(String token, Object principal, Collection<? extends GrantedAuthority> authorities) {
-        super(authorities);
-        this.token = token;
-        this.principal = principal;
-        setAuthenticated(true);
+    public String createToken(AppUser user) {
+        Date now = new Date();
+        Date validity = new Date(now.getTime() + validityInMilliseconds);
+
+        return Jwts.builder()
+                .setSubject(user.getEmail())
+                .claim("userId", user.getId())
+                .claim("role", user.getRole())
+                .setIssuedAt(now)
+                .setExpiration(validity)
+                .signWith(key)
+                .compact();
     }
 
-    @Override
-    public Object getCredentials() {
-        return token;
+    public boolean validateToken(String token) {
+        try {
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
-    @Override
-    public Object getPrincipal() {
-        return principal;
+    public Claims getClaims(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
+
+    public String getEmailFromToken(String token) {
+        return getClaims(token).getSubject();
     }
 }
