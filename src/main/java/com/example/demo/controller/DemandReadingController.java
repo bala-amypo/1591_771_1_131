@@ -4,7 +4,7 @@ import com.example.demo.entity.DemandReading;
 import com.example.demo.service.DemandReadingService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.util.List;
 
 @RestController

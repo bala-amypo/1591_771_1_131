@@ -4,6 +4,7 @@ import com.example.demo.entity.Zone;
 import com.example.demo.service.ZoneService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 import java.util.List;
 
