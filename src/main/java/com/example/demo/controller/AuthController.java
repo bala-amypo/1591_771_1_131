@@ -1,30 +1,31 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.AuthRequest;
+import com.example.demo.dto.AuthResponse;
 import com.example.demo.entity.AppUser;
 import com.example.demo.service.AppUserService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin("*")
 public class AuthController {
-    private final AppUserService userService;
-
-    public AuthController(AppUserService userService) {
-        this.userService = userService;
+    
+    private final AppUserService appUserService;
+    
+    public AuthController(AppUserService appUserService) {
+        this.appUserService = appUserService;
     }
 
     @PostMapping("/register")
-    public AppUser register(@RequestBody AppUser user) {
-        return userService.register(
-            user.getEmail(), 
-            user.getPassword(), 
-            user.getRole()
-        );
+    public ResponseEntity<AppUser> register(@RequestBody AuthRequest request) {
+        AppUser user = appUserService.register(request.getEmail(), request.getPassword(), "USER");
+        return ResponseEntity.ok(user);
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody AppUser user) {
-        return userService.login(user.getEmail(), user.getPassword());
+    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
+        AuthResponse response = appUserService.login(request.getEmail(), request.getPassword());
+        return ResponseEntity.ok(response);
     }
 }
