@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/zones")
-@securityRequirement(name="bearerAuth")
+@SecurityRequirement(name = "bearerAuth")
 public class ZoneController {
     
     private final ZoneService zoneService;

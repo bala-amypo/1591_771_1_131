@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/supply-forecasts")
-@securityRequirement(name="bearerAuth")
+@SecurityRequirement(name = "bearerAuth")
 public class SupplyForecastController {
     
     private final SupplyForecastService supplyForecastService;
