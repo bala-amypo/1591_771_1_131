@@ -9,6 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/demand-readings")
+
 public class DemandReadingController {
     
     private final DemandReadingService demandReadingService;
