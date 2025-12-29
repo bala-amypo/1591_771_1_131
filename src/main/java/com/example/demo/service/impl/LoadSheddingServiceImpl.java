@@ -58,7 +58,6 @@ public class LoadSheddingServiceImpl implements LoadSheddingService {
         
         double deficit = totalDemand - availableSupply;
         
-        // Find zones to shed - prioritize lowest priority (highest priority number)
         Zone targetZone = null;
         double targetDemand = 0;
         
